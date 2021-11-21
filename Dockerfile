@@ -1,6 +1,6 @@
 FROM python:3.9.6-slim
 
-EXPOSE 80
+EXPOSE 8000
 
 # Keeps Python from generating .pyc files in the container
 ENV PYTHONDONTWRITEBYTECODE=1
