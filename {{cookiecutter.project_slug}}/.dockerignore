@@ -61,3 +61,6 @@ environments/
 README.md
 
 # App specifics
+az*.ini
+sampledata/
+jpnb/
