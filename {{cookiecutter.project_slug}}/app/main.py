@@ -35,7 +35,7 @@ async def catch_exceptions_middleware(request: Request, call_next):
 @app.exception_handler(RequestValidationError)
 async def validation_exception_handler(request: Request, exc: RequestValidationError):
 
-    logger.error({"Erro de validacion con body": exc.body})
+    logger.error({"Error de validacion con body": exc.body})
 
     failed_cols = []
     for err_dict in exc.errors():
