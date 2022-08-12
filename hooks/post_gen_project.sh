@@ -1,6 +1,6 @@
 #!/usr/bin/env sh
 
-# Script to create remote repository and install dependencies with poetry
+# Script to create remote repository and install dependencies with poetry and testing DB
 
 read -p "Enter the name of the remote repository: " PROYECT_DESCRIPTION
 
@@ -14,3 +14,6 @@ poetry init \
     --no-interaction
 poetry add fastapi sqlalchemy
 poetry add -D mypy black isort autoflake python-dotenv pytest
+
+# install testing DB
+tch db.sqlite3 --batch db.sqlite3

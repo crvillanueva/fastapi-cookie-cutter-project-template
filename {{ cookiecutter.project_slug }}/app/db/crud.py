@@ -1,10 +1,8 @@
 from typing import List, Optional, Type, TypeVar, Union
 
 from fastapi import HTTPException, status
-from fastapi.logger import logger
 from pydantic import BaseModel
 from sqlalchemy import asc, delete, desc
-from sqlalchemy.exc import DatabaseError
 from sqlalchemy.orm import Session
 
 T = TypeVar("T")
