@@ -1,8 +1,44 @@
+# https://github.com/github/gitignore/blob/main/Python.gitignore 
+# + Azure VSCode template
+# + Custom
+
 # Byte-compiled / optimized / DLL files
 **/__pycache__
 
-# Testing
+# Distribution / packaging
+.Python
+build/
+develop-eggs/
+dist/
+downloads/
+eggs/
+.eggs/
+lib/
+lib64/
+parts/
+sdist/
+var/
+wheels/
+share/python-wheels/
+*.egg-info/
+.installed.cfg
+*.egg
+MANIFEST
+
+# Unit test / coverage reports
 **/.pytest_cache
+htmlcov/
+.tox/
+.nox/
+.coverage
+.coverage.*
+.cache
+nosetests.xml
+coverage.xml
+*.cover
+*.py,cover
+.hypothesis/
+cover/
 
 # mypy
 **/.mypy_cache/
@@ -28,33 +64,39 @@ ENV/
 env.bak/
 venv.bak/
 
-# Azurite artifacts
+# Azurite and Azure Function artifacts
 __blobstorage__
 __queuestorage__
 __azurite_db*__.json
 .python_packages
+bin
+obj
+appsettings.json
+local.settings.json
+
+# IPython
+profile_default/
+ipython_config.py
+
+# Celery stuff
+celerybeat-schedule
+celerybeat.pid
+
+# Django stuff:
+*.log
+local_settings.py
+db.sqlite3
+db.sqlite3-journal
+
+# Flask stuff:
+instance/
+.webassets-cache
 
 # Environment variables
 *.env
 env.*
 environments/
 
-# IPython
-profile_default/
-ipython_config.py
-
-# Azure Functions artifacts
-bin
-obj
-appsettings.json
-local.settings.json
-.python_packages
-
-# .ignore files
-# .gitignore
-# .dockerignore
-
 # App specifics
-az*.ini
 sampledata/
 jpnb/
