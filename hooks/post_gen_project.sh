@@ -4,15 +4,18 @@
 
 read -p "Enter proyect description: " PROYECT_DESCRIPTION
 
+# git
+git init
+
 # create remote repository
-gh repo create --private --remote origin --source=. --description $PROYECT_DESCRIPTION
+gh repo create --private --remote origin --source=. --description "$PROYECT_DESCRIPTION"
 
 # install dependencies
-poetry init \
+/usr/bin/python3 -m venv .venv
+poetry init --quiet --no-interaction \
     --author "Cristobal Villanueva <cristobal.villanueva@geovalidata.com>" \
-    --description $PROYECT_DESCRIPTION \
-    --no-interaction
-poetry add fastapi sqlalchemy
+    --description "$PROYECT_DESCRIPTION"
+poetry add fastapi sqlalchemy gunicorn
 poetry add -D mypy black isort autoflake python-dotenv pytest
 
 # install testing DB
