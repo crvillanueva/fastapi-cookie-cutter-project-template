@@ -28,11 +28,6 @@ ENV/
 env.bak/
 venv.bak/
 
-# Environment variables
-*.env
-env.*
-environments/
-
 # VSCode generated
 **/__pycache__
 **/.classpath
@@ -59,6 +54,11 @@ environments/
 **/secrets.dev.yaml
 **/values.dev.yaml
 README.md
+
+# Environment variables
+*.env
+env.*
+environments/
 
 # App specifics
 az*.ini
