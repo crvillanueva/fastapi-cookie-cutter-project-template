@@ -1,9 +1,10 @@
-from typing import List, Optional, Type, TypeVar, Union
+from typing import List, Type, TypeVar
 
 from fastapi import HTTPException, status
 from pydantic import BaseModel
 from sqlalchemy import asc, delete, desc
 from sqlalchemy.orm import Session
+from sqlalchemy.sql import select
 
 T = TypeVar("T")
 
@@ -18,7 +19,7 @@ def create_model_instance(session: Session, SqlModel: Type[T], **kwargs) -> T:
 
 def create_model_instances(
     session: Session, SqlModel: Type[T], new_instances: List[BaseModel]
-) -> List[T]:
+) -> list[T]:
     new_model_instances = []
     for instance in new_instances:
         new_instance = SqlModel(**instance.dict(exclude_unset=True))
@@ -28,33 +29,36 @@ def create_model_instances(
     return new_model_instances
 
 
-def select_from_model(
-    session: Session, SqlModel: Type[T], pk: Optional[Union[int, str]] = None
-):
-    objects = None
-    if pk:
-        objects = session.get(SqlModel, pk)
-    else:
-        objects = session.query(SqlModel).all()
+def select_unique_from_model(
+    session: Session, SqlModel: Type[T], pk: int | str | None = None
+) -> T:
+    instance = session.get(SqlModel, pk)
+    if not instance:
+        raise HTTPException(status_code=status.HTTP_204_NO_CONTENT)
+    return instance
+
+
+def select_all_from_model(session: Session, SqlModel: Type[T]) -> list[T]:
+    objects = session.execute(select(SqlModel)).scalars().all()
     if not objects:
         raise HTTPException(status_code=status.HTTP_204_NO_CONTENT)
     return objects
 
 
 def update_model_by_pk(
-    session: Session, SqlModel: Type[T], pk: Union[int, str], **kwargs
+    session: Session, SqlModel: Type[T], pk: int | str | None, **kwargs
 ) -> T:
     instance = session.get(SqlModel, pk)
     if not instance:
         raise HTTPException(status_code=status.HTTP_204_NO_CONTENT)
-    for attribute, value in kwargs.items():
-        setattr(instance, attribute, value)
+    for key, value in kwargs.items():
+        setattr(instance, key, value)
     session.commit()
     session.refresh(instance)
     return instance
 
 
-def delete_all(session: Session, SqlModel: Type[T]) -> bool:
+def delete_all(session: Session, SqlModel) -> bool:
     session.execute(delete(SqlModel))
     session.commit()
     return True

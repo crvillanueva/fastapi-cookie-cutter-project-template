@@ -10,24 +10,25 @@ from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import JSONResponse
 from sqlalchemy.exc import DatabaseError
 
-from app.config import TIMEZONE_LOCAL
+from app.config import APP_PORT, APP_TIMEZONE_LOCAL
 from app.utils import get_local_now_datetime
 
 app = FastAPI(
     title="API Title",
-    description=f"Last deployment: {get_local_now_datetime(TIMEZONE_LOCAL).strftime('%Y-%m-%d %H:%M:%S')}",
+    description=f"Last deployment: {get_local_now_datetime(APP_TIMEZONE_LOCAL).strftime('%Y-%m-%d %H:%M:%S')}",
     redoc_url=None,
     dependencies=[],
 )
 
-# SECTION Middleware
+
+# SECTION: Middleware
 # wraps all server errors in detail json response for frontend
 @app.middleware("http")
 async def catch_exceptions_middleware(request: Request, call_next):
     try:
         return await call_next(request)
     except Exception as e:
-        logger.error(e)
+        logger.exception(e)
         return JSONResponse(
             {"detail": "Error del servidor"},
             status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
@@ -42,10 +43,10 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
-# SECTION Exception handling
+
+# SECTION: Exception handling
 @app.exception_handler(RequestValidationError)
 async def validation_exception_handler(request: Request, exc: RequestValidationError):
-
     logger.error({"Validation error with body": exc.body})
 
     error_columns: List[str] = []
@@ -69,7 +70,6 @@ async def validation_exception_handler(request: Request, exc: RequestValidationE
 
 @app.exception_handler(DatabaseError)
 async def database_error_exception_handler(request: Request, exc: DatabaseError):
-
     logger.error({"Database error": str(exc)})
 
     if "SEVERITY: 16" in str(exc):
@@ -107,6 +107,7 @@ async def database_error_exception_handler(request: Request, exc: DatabaseError)
     )
 
 
+# SECTION: first endpoint
 @app.get("/")
 async def root():
     return {"msg": "Hello"}
@@ -118,7 +119,7 @@ if __name__ == "__main__":
     uvicorn.run(
         "app.main:app",
         host="0.0.0.0",
-        port=8000,
+        port=APP_PORT,
         reload=True,
     )
 else:
