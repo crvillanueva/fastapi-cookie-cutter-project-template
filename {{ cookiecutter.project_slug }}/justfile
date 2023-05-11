@@ -3,7 +3,7 @@ set dotenv-load
 
 python_dir := if os_family() == "windows" { "./.venv/Scripts" } else { "./.venv/bin" }
 python := python_dir + if os_family() == "windows" { "/python.exe" } else { "/python3" }
-system_python := if os_family() == "windows" { "py.exe -3.10" } else { "python3.10" }
+system_python := if os_family() == "windows" { "py.exe -3.{{ cookiecutter.python_version }}" } else { "python3.{{ cookiecutter.python_version }}" }
 
 run-main:
-    {{ python }} -m app.main
+    {{ "{{" }} python {{ "}}" }} -m app.main

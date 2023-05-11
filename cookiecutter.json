@@ -1,4 +1,6 @@
 {
   "project_name": "Project Name",
-  "project_slug": "{{ cookiecutter.project_name.lower().replace(' ', '-') }}"
+  "project_slug": "{{ cookiecutter.project_name.lower().replace(' ', '-') }}",
+  "work": "y",
+  "python_version": "11"
 }
